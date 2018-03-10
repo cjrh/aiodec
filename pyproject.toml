@@ -15,4 +15,4 @@ classifiers = [
     "Operating System :: OS Independent"
 ]
 description-file = "README.rst"
-dev-requires = ["pytest", "pytest-cov", "wheel"]
+dev-requires = ["pytest", "pytest-cov", "wheel", "coveralls"]
