@@ -59,7 +59,7 @@ Not terribly special. Yet. You can also customize the log message:
 
 This outputs log messages with the following message::
 
-    INFO:aiodec:Time taken: 3e-4 seconds
+    INFO:aiodec:Time cost was 3e-4 sec
 
 
 Two things: first, the template parameter used for the time cost is called
