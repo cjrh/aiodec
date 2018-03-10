@@ -85,3 +85,12 @@ This outputs log messages with the following message::
 
 Magic! Note that positional args and keyword args and default values
 are all handled correctly.
+
+As you saw earlier, in addition to the function parameters, the special
+``$time_`` parameter will also be available. The other extra fields are:
+
+- ``$name_``, which contains the ``__name__`` of the wrapped function, and
+- ``$qualname_``, which contains the ``__qualname__`` of the wrapped function.
+
+These three template parameters have a trailing underscore, to avoid collisions
+with any parameter names.

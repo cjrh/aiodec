@@ -12,12 +12,12 @@ from functools import wraps
 from string import Template
 import inspect
 from inspect import Signature, BoundArguments
-from typing import Callable, Optional
+from typing import Callable, Optional, Mapping, Any
 
 __version__ = '2018.3.1'
 
 logger = logging.getLogger(__name__)
-Callback = Callable[[Signature, BoundArguments], None]
+Callback = Callable[[Signature, Mapping[str, Any]], None]
 
 
 def adecorator(
@@ -28,6 +28,7 @@ def adecorator(
     def inner(g):
         # Get the function signature of the wrapped function. We need this
         # in order to obtain all the parameter information.
+        template_parameters = dict(name_=g.__name__, qualname_=g.__qualname__)
         sig = inspect.signature(g)
 
         @wraps(g)
@@ -38,11 +39,12 @@ def adecorator(
             # Now fill in the unsupplied parameters with their default
             # values.
             bound_args.apply_defaults()
-            pre_callback and pre_callback(sig, bound_args)
+            template_parameters.update(bound_args.arguments)
+            pre_callback and pre_callback(sig, template_parameters)
             try:
                 return await g(*args, **kwargs)
             finally:
-                post_callback and post_callback(sig, bound_args)
+                post_callback and post_callback(sig, template_parameters)
 
         return wrapper
 
@@ -61,15 +63,15 @@ def astopwatch(f=None, message_template='Time taken: $time_ seconds', fmt='%.4g'
     tmpl = Template(message_template)
     t0 = 0
 
-    def pre_callback(sig, bound_args):
+    def pre_callback(sig, template_parameters):
         nonlocal t0
         t0 = time.perf_counter()
 
-    def post_callback(sig, bound_args):
+    def post_callback(sig, template_parameters):
         nonlocal t0
         dt = time.perf_counter() - t0
         msg = tmpl.safe_substitute(
-            **bound_args.arguments,
+            **template_parameters,
             time_=fmt % dt
         )
         logger.info(msg)
