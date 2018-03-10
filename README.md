@@ -1,2 +1,0 @@
-# aiodec
-Decorators for coroutines

@@ -1,0 +1,18 @@
+[build-system]
+requires = ["flit"]
+build-backend = "flit.buildapi"
+
+[tool.flit.metadata]
+module = "aiodec"
+author = "Caleb Hattingh"
+author-email = "caleb.hattingh@gmail.com"
+home-page = "https://github.com/cjrh/aiodec"
+classifiers = [
+    "License :: OSI Approved :: Apache Software License",
+    "Natural Language :: English",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.6",
+    "Operating System :: OS Independent"
+]
+description-file = "README.rst"
+dev-requires = ["pytest", "pytest-cov", "wheel"]
