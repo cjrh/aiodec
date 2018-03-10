@@ -1,0 +1,10 @@
+[run]
+branch = True
+source = aiodec, tests
+include = tests/*
+
+[report]
+exclude_lines =
+    # Have to re-enable the standard pragma
+    pragma: no cover
+    if typing.TYPE_CHECKING:

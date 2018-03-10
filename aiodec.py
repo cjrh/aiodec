@@ -11,15 +11,17 @@ import logging
 from functools import wraps
 from string import Template
 import inspect
-
+from inspect import Signature, BoundArguments
+from typing import Callable, Optional
 
 logger = logging.getLogger(__name__)
+Callback = Callable[[Signature, BoundArguments], None]
 
 
 def adecorator(
         f=None,
-        pre_callback=lambda sig, bound_args: None,
-        post_callback=lambda sig, bound_args: None):
+        pre_callback: Optional[Callback] = None,
+        post_callback: Optional[Callback]= None):
 
     def inner(g):
         # Get the function signature of the wrapped function. We need this
@@ -34,11 +36,11 @@ def adecorator(
             # Now fill in the unsupplied parameters with their default
             # values.
             bound_args.apply_defaults()
-            pre_callback(sig, bound_args)
+            pre_callback and pre_callback(sig, bound_args)
             try:
                 return await g(*args, **kwargs)
             finally:
-                post_callback(sig, bound_args)
+                post_callback and post_callback(sig, bound_args)
 
         return wrapper
 
@@ -55,12 +57,14 @@ def adecorator(
 def atimer(f=None, message_template='Time taken: $time_ seconds', fmt='%.4g'):
     # Using templates because safe_substitute is awesome.
     tmpl = Template(message_template)
+    t0 = 0
 
     def pre_callback(sig, bound_args):
         nonlocal t0
         t0 = time.perf_counter()
 
     def post_callback(sig, bound_args):
+        nonlocal t0
         dt = time.perf_counter() - t0
         msg = tmpl.safe_substitute(
             **bound_args.arguments,
