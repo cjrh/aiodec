@@ -1,7 +1,7 @@
 import logging
 import asyncio
 import pytest
-from aiodec import atimer
+from aiodec import astopwatch
 
 
 logging.basicConfig(level='DEBUG')
@@ -15,7 +15,7 @@ def test_timer_default():
 
     loop = get_loop()
 
-    @atimer
+    @astopwatch
     async def f(x):
         await asyncio.sleep(0.01)
         return x + 1
@@ -28,7 +28,7 @@ def test_timer_custom():
 
     loop = get_loop()
 
-    @atimer(message_template='Blah $_time s')
+    @astopwatch(message_template='Blah $_time s')
     async def f(x):
         await asyncio.sleep(0.01)
         return x + 1
@@ -41,7 +41,7 @@ def test_timer_invalid_template():
 
     loop = get_loop()
 
-    @atimer(message_template='Blah')
+    @astopwatch(message_template='Blah')
     async def f(x):
         await asyncio.sleep(0.01)
         return x + 1
@@ -54,7 +54,7 @@ def test_timer_invalid_raise():
 
     loop = get_loop()
 
-    @atimer(message_template='RuntimeError test took: $time_')
+    @astopwatch(message_template='RuntimeError test took: $time_')
     async def f():
         await asyncio.sleep(0.01)
         raise RuntimeError('blah')
@@ -69,7 +69,7 @@ def test_timer_moar_template(caplog):
 
     # Observe: the message template is going to include parameter
     # values from the wrapped function.
-    @atimer(message_template='abc=$abc ddd=$ddd time=$time_ secs')
+    @astopwatch(message_template='abc=$abc ddd=$ddd time=$time_ secs')
     async def f(abc, ddd=123):
         await asyncio.sleep(0.01)
         return 'ok'

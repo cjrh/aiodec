@@ -14,6 +14,8 @@ import inspect
 from inspect import Signature, BoundArguments
 from typing import Callable, Optional
 
+__version__ = '2018.3.1'
+
 logger = logging.getLogger(__name__)
 Callback = Callable[[Signature, BoundArguments], None]
 
@@ -45,16 +47,16 @@ def adecorator(
         return wrapper
 
     if f:
-        # atimer() was called WITHOUT evaluation, so we must return the
+        # astopwatch() was called WITHOUT evaluation, so we must return the
         # actual wrapper function that replaces f.
         return inner(f)
     else:
-        # atimer() was called WITH evaluation, so we need to return ANOTHER
+        # astopwatch() was called WITH evaluation, so we need to return ANOTHER
         # decorator (that will receive  and wrap function f).
         return inner
 
 
-def atimer(f=None, message_template='Time taken: $time_ seconds', fmt='%.4g'):
+def astopwatch(f=None, message_template='Time taken: $time_ seconds', fmt='%.4g'):
     # Using templates because safe_substitute is awesome.
     tmpl = Template(message_template)
     t0 = 0

@@ -25,4 +25,63 @@
 aiodec
 ======
 
-TBD
+*Decorators for asyncio*
+
+.. contents::
+
+astopwatch
+----------
+
+The ``astopwatch`` decorator is used in the following way:
+
+.. code-block:: python
+
+    from aiodec import astopwatch
+
+    @astopwatch
+    async def blah(x, y):
+        return x + y
+
+What does it do? This simple decorator will emit logs with the following message::
+
+    INFO:aiodec:Time taken: 0.0003 seconds
+
+
+Not terribly special. Yet. You can also customize the log message:
+
+.. code-block:: python
+
+    from aiodec import astopwatch
+
+    @astopwatch(message_template='Time cost was $time_ sec', fmt='%.1g')
+    async def blah(x, y):
+        return x + y
+
+This outputs log messages with the following message::
+
+    INFO:aiodec:Time taken: 3e-4 seconds
+
+
+Two things: first, the template parameter used for the time cost is called
+``$time_``; second, you can customize the formatting of the seconds value.
+However, it can also do something a lot more interesting: it can include
+parameters from the wrapped function in the message:
+
+.. code-block:: python
+
+    from aiodec import astopwatch
+
+    @astopwatch(message_template='x=$x y=$y | $time_ seconds')
+    async def blah(x, y=2):
+        return x + y
+
+
+    loop.run_until_complete(blah(1))
+
+This outputs log messages with the following message::
+
+    INFO:aiodec:x=1 y=2 | 0.0003 seconds
+
+
+Magic! Note that positional args and keyword args and default values
+are all handled correctly.
