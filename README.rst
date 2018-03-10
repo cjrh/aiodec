@@ -2,7 +2,7 @@
     :target: https://img.shields.io/badge/stdlib--only-yes-green.svg
 
 .. image:: https://travis-ci.org/cjrh/aiodec.svg?branch=master
-    :target: https://travis-ci.org/cjrh/aiodecaiodec
+    :target: https://travis-ci.org/cjrh/aiodec
 
 .. image:: https://coveralls.io/repos/github/cjrh/aiodec/badge.svg?branch=master
     :target: https://coveralls.io/github/cjrh/aiodec?branch=master
