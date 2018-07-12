@@ -14,7 +14,7 @@ import inspect
 from inspect import Signature, BoundArguments
 from typing import Callable, Optional, Mapping, Any
 
-__version__ = '2018.3.1'
+__version__ = '2018.7.1'
 
 logger = logging.getLogger(__name__)
 Callback = Callable[[Signature, Mapping[str, Any]], None]
