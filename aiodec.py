@@ -11,10 +11,10 @@ import logging
 from functools import wraps
 from string import Template
 import inspect
-from inspect import Signature, BoundArguments
+from inspect import Signature
 from typing import Callable, Optional, Mapping, Any
 
-__version__ = '2018.7.1'
+__version__ = '2018.8.1'
 
 logger = logging.getLogger(__name__)
 Callback = Callable[[Signature, Mapping[str, Any]], None]
