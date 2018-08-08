@@ -26,16 +26,18 @@ def adecorator(
         post_callback: Optional[Callback]= None):
 
     def inner(g):
-        # Get the function signature of the wrapped function. We need this
-        # in order to obtain all the parameter information.
-        template_parameters = dict(name_=g.__name__, qualname_=g.__qualname__)
-        sig = inspect.signature(g)
 
         @wraps(g)
         async def wrapper(*args, **kwargs):
+            # Get the function signature of the wrapped function. We need this
+            # in order to obtain all the parameter information.
+            template_parameters = dict(name_=g.__name__, qualname_=g.__qualname__)
+            sig = inspect.signature(g)
+
             # Using the actually-provided args, bind them to the signature
             # of the wrapped function
             bound_args = sig.bind(*args, **kwargs)
+            
             # Now fill in the unsupplied parameters with their default
             # values.
             bound_args.apply_defaults()
