@@ -14,7 +14,7 @@ import inspect
 from inspect import Signature
 from typing import Callable, Optional, Mapping, Any
 
-__version__ = '2018.8.1'
+__version__ = '2018.10.1'
 
 logger = logging.getLogger(__name__)
 Callback = Callable[[Signature, Mapping[str, Any]], None]
@@ -60,7 +60,12 @@ def adecorator(
         return inner
 
 
-def astopwatch(f=None, message_template='Time taken: $time_ seconds', fmt='%.4g'):
+def astopwatch(
+        f=None,
+        message_template='Time taken: $time_ seconds',
+        fmt='%.4g',
+        logger=logger,
+):
     # Using templates because safe_substitute is awesome.
     tmpl = Template(message_template)
     t0 = 0
